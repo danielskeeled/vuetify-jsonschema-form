@@ -332,6 +332,25 @@
       </template>
     </v-combobox>
 
+    <!-- Image File picking -->
+    <div v-else-if="fullSchema.type === 'file'"
+        :required="required"
+        :rules="rules">
+    {{ fullKey }} {{ label }}
+      <v-tooltip v-if="fullSchema.description" slot="append" left>
+        <v-icon slot="activator">info</v-icon>
+        <div class="vjsf-tooltip" v-html="htmlDescription"/>
+      </v-tooltip>
+      <v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
+        <input-file
+                    v-model="modelWrapper[modelKey]"
+                    :accept="allowedExtensions"
+                    input-id="career-image"
+                    label="Upload image"
+                    @input="uploaded"/>
+      </v-flex>
+    </div>
+
     <!-- Object sub container with properties that may include a select based on a oneOf and subparts base on a allOf -->
     <div v-else-if="fullSchema.type === 'object'">
       <v-subheader v-if="fullSchema.title" :style="foldable ? 'cursor:pointer;' :'' " class="mt-2" @click="folded = !folded">
@@ -541,10 +560,12 @@ import schemaUtils from '../utils/schema'
 import selectUtils from '../utils/select'
 const matchAll = require('match-all')
 const md = require('markdown-it')()
+import InputFile from './InputFile';
 
 export default {
   name: 'Property',
   props: ['schema', 'modelWrapper', 'modelRoot', 'modelKey', 'parentKey', 'required', 'options'],
+  components: { InputFile },
   data() {
     return {
       ready: false,
