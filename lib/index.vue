@@ -41,6 +41,6 @@ export default {
         searchMessage: 'Search...'
       }, this.options)
     }
-  }
+  },
 }
 </script>

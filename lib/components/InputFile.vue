@@ -17,10 +17,19 @@
             <v-icon v-if="fileName" small color="primary" @click="removeFile()">close</v-icon>
             <span>{{fileName}}</span>
         </v-flex>
+        <v-flex v-else-if="fileName" xs12 d-flex>
+            <span v-if="fileName">Filename: {{fileName}}</span>
+        </v-flex>
+        <v-flex v-if="value.url" :key="value.url" xs12 d-flex>
+            <span>URL: {{value.url}}</span>
+            <img v-if="isImage" :src="value.url" style="width: 50px; height: 50px;"/>
+        </v-flex>
     </v-layout>
 </template>
 
 <script>
+const imageFormats = ['jpg', 'jpeg', 'png', 'bmp', 'JPG', 'JPEG', 'PNG', 'BMP'];
+
 export default {
     name: 'input-file',
     props: {
@@ -31,17 +40,24 @@ export default {
         // the v-model variable instead of changing only the wanted variable
         inputId: { type: String, required: true },
         label: { type: String, default: '' },
-        accept: { type: String, default: 'image/*,application/pdf,application/msword,text/plain,.docx' },
+        accept: {
+            type: String,
+            default: 'jpg,jpeg,png,bmp,JPG,JPEG,PNG,BMP,image/*,application/pdf,application/msword,text/plain,.docx'
+        },
         maxSize: { type: Number, default: 10 }, // megabytes
     },
     data () {
         return {
             fileName: '',
             loading: false,
+            isImage: false,
         };
     },
     created () {
         if (this.value && this.value.name) this.fileName = this.value.name;
+        let extension;
+        if (this.value && this.value.url) extension = this.value.url.split('.').pop();
+        if (imageFormats.indexOf(extension)) this.isImage = true;
     },
     methods: {
         /**
@@ -95,6 +111,7 @@ export default {
                     name: file.name,
                     type: file.type,
                     extension: file.name.split('.').pop(),
+                    url: '',
                 };
 
                 this.fileName = file.name;

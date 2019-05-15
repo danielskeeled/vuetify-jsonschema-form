@@ -332,22 +332,18 @@
       </template>
     </v-combobox>
 
-    <!-- Image File picking -->
-    <div v-else-if="fullSchema.type === 'file'"
+    <!-- File picking -->
+    <div v-else-if="fullSchema.type === 'object' && fullSchema.format === 'file'"
         :required="required"
         :rules="rules">
-    {{ fullKey }} {{ label }}
-      <v-tooltip v-if="fullSchema.description" slot="append" left>
-        <v-icon slot="activator">info</v-icon>
-        <div class="vjsf-tooltip" v-html="htmlDescription"/>
-      </v-tooltip>
+      {{ fullSchema.title }}
       <v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
         <input-file
                     v-model="modelWrapper[modelKey]"
-                    :accept="allowedExtensions"
-                    input-id="career-image"
-                    label="Upload image"
-                    @input="uploaded"/>
+                    :removable="false"
+                    :input-id="'career-file'"
+                    label="Upload file"
+        />
       </v-flex>
     </div>
 
@@ -579,7 +575,7 @@ export default {
       loading: false,
       folded: true,
       showColorPicker: false,
-      subModels: {} // a container for objects from root oneOfs and allOfs
+      subModels: {}, // a container for objects from root oneOfs and allOfs
     }
   },
   computed: {
