@@ -239,6 +239,25 @@
       </v-tooltip>
     </v-text-field>
 
+    <!-- Multilanguage text field -->
+    <v-text-field v-else-if="fullSchema.type === 'string' && fullSchema.format === 'multilang'"
+                  v-model="modelWrapper[modelKey]"
+                  :name="fullKey"
+                  :label="fullKey.replace('.', ' - ')"
+                  :disabled="disabled"
+                  :required="required"
+                  :rules="rules"
+                  @change="change"
+                  @input="input"
+    >
+      <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
+        <v-icon slot="activator">
+          info
+        </v-icon>
+        <div class="vjsf-tooltip" v-html="htmlDescription" />
+      </v-tooltip>
+    </v-text-field>
+
     <!-- Simple text field -->
     <v-text-field v-else-if="fullSchema.type === 'string'"
                   v-model="modelWrapper[modelKey]"
