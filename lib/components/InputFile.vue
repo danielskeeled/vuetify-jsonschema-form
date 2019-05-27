@@ -42,22 +42,29 @@ export default {
         label: { type: String, default: '' },
         accept: {
             type: String,
-            default: 'jpg,jpeg,png,bmp,JPG,JPEG,PNG,BMP,image/*,application/pdf,application/msword,text/plain,.docx'
+            default: 'jpg,jpeg,png,bmp,JPG,JPEG,PNG,BMP,.otf,.OTF,.ttf,.TTF,.woff,.WOFF,.woff2,.WOFF2' +
+                ',image/*,application/pdf,application/msword,text/plain,.docx,application/font-woff' +
+                ',application/font-woff2,application/x-font-ttf,application/x-font-truetype' +
+                ',application/x-font-opentype,application/vnd.ms-fontobject'
         },
         maxSize: { type: Number, default: 10 }, // megabytes
+    },
+    computed: {
+        isImage () {
+            let extension = '';
+            if (this.value && this.value.url) extension = this.value.url.split('.').pop();
+            if (imageFormats.indexOf(extension) !== -1) return true;
+            return false;
+        },
     },
     data () {
         return {
             fileName: '',
             loading: false,
-            isImage: false,
         };
     },
     created () {
         if (this.value && this.value.name) this.fileName = this.value.name;
-        let extension;
-        if (this.value && this.value.url) extension = this.value.url.split('.').pop();
-        if (imageFormats.indexOf(extension)) this.isImage = true;
     },
     methods: {
         /**
