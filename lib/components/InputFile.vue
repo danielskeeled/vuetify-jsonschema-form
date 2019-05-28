@@ -33,12 +33,7 @@ const imageFormats = ['jpg', 'jpeg', 'png', 'bmp', 'JPG', 'JPEG', 'PNG', 'BMP'];
 export default {
     name: 'input-file',
     props: {
-        value: {
-            type: Object,
-            default: () => {
-                url: ''
-            }
-        },
+        value: { type: Object, default: () => {} },
         disabled: { type: Boolean, default: false },
         removable: { type: Boolean, default: true },
         // required because all instances of this component on the DOM will catch the input event altering
