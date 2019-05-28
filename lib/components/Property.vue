@@ -352,7 +352,9 @@
     </v-combobox>
 
     <!-- File picking -->
-    <div v-else-if="fullSchema.type === 'object' && fullSchema.format === 'file'"
+    <div
+        :key="`${fullSchema.title}${modelWrapper[modelKey].url}`" 
+        v-else-if="fullSchema.type === 'object' && fullSchema.format === 'file'"
         :required="required"
         :rules="rules">
       {{ fullSchema.title }}
