@@ -239,6 +239,25 @@
       </v-tooltip>
     </v-text-field>
 
+    <!-- Multilanguage text field -->
+    <v-text-field v-else-if="fullSchema.type === 'string' && fullSchema.format === 'multilang'"
+                  v-model="modelWrapper[modelKey]"
+                  :name="fullKey"
+                  :label="fullKey.replace('.', ' - ')"
+                  :disabled="disabled"
+                  :required="required"
+                  :rules="rules"
+                  @change="change"
+                  @input="input"
+    >
+      <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
+        <v-icon slot="activator">
+          info
+        </v-icon>
+        <div class="vjsf-tooltip" v-html="htmlDescription" />
+      </v-tooltip>
+    </v-text-field>
+
     <!-- Simple text field -->
     <v-text-field v-else-if="fullSchema.type === 'string'"
                   v-model="modelWrapper[modelKey]"
@@ -331,6 +350,21 @@
         </v-chip>
       </template>
     </v-combobox>
+
+    <!-- File picking -->
+    <div v-else-if="fullSchema.type === 'object' && fullSchema.format === 'file'"
+        :required="required"
+        :rules="rules">
+      {{ fullSchema.title }}
+      <v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
+        <input-file
+                    v-model="modelWrapper[modelKey]"
+                    :removable="false"
+                    :input-id="'career-file'"
+                    label="Upload file"
+        />
+      </v-flex>
+    </div>
 
     <!-- Object sub container with properties that may include a select based on a oneOf and subparts base on a allOf -->
     <div v-else-if="fullSchema.type === 'object'">
@@ -541,10 +575,12 @@ import schemaUtils from '../utils/schema'
 import selectUtils from '../utils/select'
 const matchAll = require('match-all')
 const md = require('markdown-it')()
+import InputFile from './InputFile';
 
 export default {
   name: 'Property',
   props: ['schema', 'modelWrapper', 'modelRoot', 'modelKey', 'parentKey', 'required', 'options'],
+  components: { InputFile },
   data() {
     return {
       ready: false,
@@ -558,7 +594,7 @@ export default {
       loading: false,
       folded: true,
       showColorPicker: false,
-      subModels: {} // a container for objects from root oneOfs and allOfs
+      subModels: {}, // a container for objects from root oneOfs and allOfs
     }
   },
   computed: {
