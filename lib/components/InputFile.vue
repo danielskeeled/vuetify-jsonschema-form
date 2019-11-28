@@ -47,7 +47,7 @@ export default {
                 ',application/font-woff2,application/x-font-ttf,application/x-font-truetype' +
                 ',application/x-font-opentype,application/vnd.ms-fontobject'
         },
-        maxSize: { type: Number, default: 10 }, // megabytes
+        maxSize: { type: Number, default: 20 }, // megabytes
     },
     computed: {
         isImage () {
