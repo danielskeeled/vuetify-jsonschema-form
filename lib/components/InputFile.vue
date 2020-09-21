@@ -47,7 +47,7 @@ export default {
                 ',application/font-woff2,application/x-font-ttf,application/x-font-truetype' +
                 ',application/x-font-opentype,application/vnd.ms-fontobject'
         },
-        maxSize: { type: Number, default: 20 }, // megabytes
+        maxSize: { type: Number, default: 30 }, // megabytes
     },
     computed: {
         isImage () {
@@ -77,6 +77,7 @@ export default {
             const files = e.target.files || e.dataTransfer.files;
 
             if (!files.length) {
+                this.loading = false;
                 return;
             }
 
@@ -86,14 +87,16 @@ export default {
             // check file max size
             if (size > this.maxSize) {
                 this.$emit('size-exceeded', size);
-                this.$_toastHandler_toastAPI('genericLoadDataError');
+                this.$_toastHandler_toastAPI('error');
                 this.removeFile();
+                this.loading = false;
                 return;
             }
 
             if (this.accept.indexOf(file.name.split('.').pop()) < 0) {
                 this.$_toastHandler_toastAPI('invalidFileExtension');
                 this.removeFile();
+                this.loading = false;
                 return;
             }
 
